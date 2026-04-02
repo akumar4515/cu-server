@@ -50,11 +50,17 @@ function setupSocket(io) {
       }
     });
 
-    socket.on("sender:stream-status", ({ isStreaming } = {}) => {
-      const deviceId = socket.data.deviceId;
-      if (!deviceId) return;
-
-      registry.updateStreamingStatus(deviceId, Boolean(isStreaming));
+    socket.on("sender:stream-status", ({ isStreaming, deviceId } = {}) => {
+      const id = deviceId || socket.data.deviceId;
+    
+      if (!id) {
+        console.log("❌ No deviceId");
+        return;
+      }
+    
+      console.log("🔥 STREAM UPDATE:", id, isStreaming);
+    
+      registry.updateStreamingStatus(id, Boolean(isStreaming));
       emitDeviceList();
     });
 
