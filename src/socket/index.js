@@ -44,6 +44,16 @@ function setupSocket(io) {
       emitDeviceList();
     });
 
+    socket.on("sender:heartbeat", ({ deviceId } = {}) => {
+      const id = typeof deviceId === "string" && deviceId.trim() ? deviceId.trim() : socket.data.deviceId;
+      if (!id) return;
+      const existing = registry.getById(id);
+      if (!existing) return;
+      // Touch lastSeenAt by updating a benign field
+      registry.setViewerCount(id, existing.viewerCount || 0);
+      emitDeviceList();
+    });
+
     socket.on("viewer:get-devices", (_, ack) => {
       const devices = registry.list();
       if (typeof ack === "function") {
