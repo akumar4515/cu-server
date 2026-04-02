@@ -63,7 +63,6 @@ function setupSocket(io) {
       registry.updateStreamingStatus(id, Boolean(isStreaming));
       emitDeviceList();
     });
-    
     socket.on("sender:heartbeat", ({ deviceId } = {}) => {
       const id = typeof deviceId === "string" && deviceId.trim() ? deviceId.trim() : socket.data.deviceId;
       if (!id) return;
