@@ -53,10 +53,7 @@ function setupSocket(io) {
     socket.on("sender:stream-status", ({ isStreaming, deviceId } = {}) => {
       const id = deviceId || socket.data.deviceId;
     
-      if (!id) {
-        console.log("❌ No deviceId");
-        return;
-      }
+      if (!id) return;
     
       console.log("🔥 STREAM UPDATE:", id, isStreaming);
     
