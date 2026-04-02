@@ -15,6 +15,19 @@ function setupSocket(io) {
   io.on("connection", (socket) => {
     socket.emit("devices:list", registry.list());
 
+    socket.on("sender:debug", (payload = {}) => {
+      try {
+        const meta = {
+          from: socket.id,
+          deviceId: socket.data?.deviceId || payload?.deviceId || null
+        };
+        // eslint-disable-next-line no-console
+        console.log("[sender:debug]", { ...meta, ...payload });
+      } catch (_) {
+        // ignore
+      }
+    });
+
     socket.on("sender:register", ({ deviceId, hostname } = {}, ack) => {
       const safeDeviceId =
         typeof deviceId === "string" && deviceId.trim() ? deviceId.trim() : uuidv4();
