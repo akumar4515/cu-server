@@ -26,6 +26,11 @@ app.get("/health", (_, res) => {
   });
 });
 
+app.get("/api/devices", (_, res) => {
+  const devices = setupSocket._registry ? setupSocket._registry.list() : [];
+  res.status(200).json({ ok: true, count: devices.length, devices });
+});
+
 const server = http.createServer(app);
 
 const io = new Server(server, {

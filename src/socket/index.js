@@ -3,6 +3,7 @@ const DeviceRegistry = require("../utils/deviceRegistry");
 
 function setupSocket(io) {
   const registry = new DeviceRegistry();
+  setupSocket._registry = registry; // expose for HTTP routes
 
   const viewersByDevice = new Map();
   const viewerCurrentDevice = new Map();
